@@ -8,7 +8,7 @@ def gestion_cuotas(integrantes):
         print("3. Ver todos los pagos")
         print("4. Volver al menú principal")
 
-        opcion = input("Elige una opción: ")
+        opcion = input("\nElige una opción (1-4): ")
 
         if opcion == "1":
             registrar_cuota(integrantes)

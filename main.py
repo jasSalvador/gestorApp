@@ -10,7 +10,7 @@ while True:
     print("3. Gastos")
     print("4. Salir")
 
-    opcion = input("Ingresa una opción: ")
+    opcion = input("Ingresa una opción (1-4): ").strip()
 
     if opcion == "1":
         gestion_usuarios()
@@ -23,10 +23,10 @@ while True:
 
     #salir
     elif opcion == "4":
-        print("Saliendo...")
+        print("Saliendo del gestor...")
         break      
 
     else:
-        print("❌ Ingresa una opción valida")
+        print("❌ Ingresa una opción valida (1-4)")
         break
 

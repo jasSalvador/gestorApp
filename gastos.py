@@ -7,7 +7,7 @@ def gestion_gastos():
         print("4. Editar gasto")
         print("5. Volver al menú principal")
 
-        opcion = input("\nElige una opción: ").strip()
+        opcion = input("\nElige una opción (1-5): ").strip()
 
         if opcion == "1":
             agregar_gasto()
@@ -65,7 +65,7 @@ def agregar_gasto():
 #ver gastos
 def ver_gastos():
     if not gastos:
-        print("\n No hay gastos registrados ⭕")
+        print("\n❌ No hay gastos registrados")
         return
     
     #calcular total acumulado de todos los gastos
