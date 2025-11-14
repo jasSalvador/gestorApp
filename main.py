@@ -1,5 +1,6 @@
 from integrantes import gestion_usuarios, integrantes
 from cuotas import gestion_cuotas
+from gastos import gestion_gastos
 
 while True:
     print("\nBienvenido a GestorApp 📝\n")
@@ -12,22 +13,18 @@ while True:
     opcion = input("Ingresa una opción: ")
 
     if opcion == "1":
-        print("x")
         gestion_usuarios()
 
     elif opcion == "2":
-        print("")
         gestion_cuotas(integrantes)
     
     elif opcion == "3":
-        print("")
-
+        gestion_gastos()
 
     #salir
     elif opcion == "4":
         print("Saliendo...")
         break      
-
 
     else:
         print("❌ Ingresa una opción valida")
