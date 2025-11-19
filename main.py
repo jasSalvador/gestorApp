@@ -22,9 +22,10 @@ def main():
                 print("1. Agregar integrante")
                 print("2. Ver integrantes")
                 print("3. Editar integrante")
-                print("4. Volver al menú principal")
+                print("4. Eliminar integrante")
+                print("5. Volver al menú principal")
 
-                sub_opcion = input("Elige una opción (1-4): ").strip()
+                sub_opcion = input("Elige una opción (1-5): ").strip()
 
                 #agregar integrante
                 if sub_opcion == "1":
@@ -32,12 +33,12 @@ def main():
                     direccion = input("Direccion: ")
                     telefono = input("Telefono: ")
                     app.agregar_integrante(nombre, direccion, telefono)
-                    print("Integrante agregado ✅")
+                    print("\nIntegrante agregado ✅")
 
                 #ver todos los integrantes
                 elif sub_opcion == "2":
                     if not app.integrantes:
-                        print("\n--Aún no hay integrantes registrados 😥")
+                        print("\nAún no hay integrantes registrados 😥")
                     else:
                         for i in app.integrantes:
                             print(i.mostrar())
@@ -59,16 +60,29 @@ def main():
                             direccion=nueva_direccion if nueva_direccion else None,
                             telefono=nuevo_telefono if nuevo_telefono else None,
                         )
-                        print("Integrante actualizado ✅")
+                        print("\nIntegrante actualizado ✅")
                     else:
-                        print("No se encontró el integrante 😥")
+                        print("\nNo se encontró el integrante 😥")
+
+                #eliminar integrante
+                elif sub_opcion == "4":
+                    buscar = input("Nombre del integrante a eliminar: ")
+                    encontrado = None
+                    for i in app.integrantes:
+                        if i.nombre.lower() == buscar.lower():
+                            encontrado = i
+                            break
+                    if encontrado:
+                        app.integrantes.remove(encontrado)
+                        print("\nIntegrante eliminado ✅")
+                    else:
+                        print("\nIntegrante no encontrado 😥")
 
                 #volver
-                elif sub_opcion == "4":
+                elif sub_opcion == "5":
                     break
-
                 else:
-                    print("Ingresa una opción válida ❌")
+                    print("\nIngresa una opción válida ❌")
 
 
         #opcion 2/cuotas
@@ -78,9 +92,10 @@ def main():
                 print("1. Registrar pago de cuota")
                 print("2. Ver pagos por persona")
                 print("3. Ver todos los pagos")
-                print("4. Volver al menú principal")
+                print("4. Eliminar un pago")
+                print("5. Volver al menú principal")
 
-                sub_opcion = input("\nElige una opción (1-4): ").strip()
+                sub_opcion = input("\nElige una opción (1-5): ").strip()
 
                 #registrar pago
                 if sub_opcion == "1":
@@ -96,9 +111,9 @@ def main():
                         fecha = input("Fecha pago: ")
                         monto = int(input("Monto pagado: "))
                         app.registrar_cuota(encontrado, mes, fecha, monto)
-                        print("Pago registrado ✅")
+                        print("\nPago registrado ✅")
                     else:
-                        print("Integrante no encontrado 😥")
+                        print("\nIntegrante no encontrado 😥")
 
                 #mostrar pagos de x persona
                 elif sub_opcion == "2":
@@ -111,27 +126,42 @@ def main():
                     if encontrado:
                         pagos = [c for c in app.cuotas if c.integrante == encontrado]
                         if not pagos:
-                            print("No hay pagos registrados para esa persona 😥")
+                            print("\nNo hay pagos registrados para esa persona 😥")
                         else:
                             for c in pagos:
                                 print(c.mostrar())
                     else:
-                        print("Integrante no encontrado 😥")
+                        print("\nIntegrante no encontrado 😥")
 
                 #ver todos los pagos
                 elif sub_opcion == "3":
                     if not app.cuotas:
-                        print("Aún no hay pagos registrados 😑")
+                        print("\nAún no hay pagos registrados 😑")
                     else:
                         for c in app.cuotas:
                             print(c.mostrar())
 
-                #volver
+                #eliminar un pago
                 elif sub_opcion == "4":
+                    buscar = input("Nombre del integrante: ")
+                    mes = input("Que mes deseas eliminar?: ")
+                    encontrado = None
+                    for i in app.cuotas:
+                        if i.integrante.nombre.lower() == buscar.lower() and i.mes.lower() == mes.lower():
+                            encontrado = i
+                            break
+                    if encontrado:
+                        app.cuotas.remove(encontrado)
+                        print("\nPago eliminado ✅")
+                    else:
+                        print("\nPago no encontrado 😥")
+
+                #volver
+                elif sub_opcion == "5":
                     break
 
                 else:
-                    print("Ingresa una opción válida ❌")
+                    print("\nIngresa una opción válida ❌")
 
 
         #op 3 / gastos
@@ -141,10 +171,10 @@ def main():
                 print("1. Registrar gasto")
                 print("2. Ver gasto específico")
                 print("3. Ver todos los gastos")
-                print("4. Volver al menú principal")
+                print("4. Eliminar gasto")
+                print("5. Volver al menú principal")
 
-                sub_opcion = input("\nElige una opción (1-4): ").strip()
-
+                sub_opcion = input("\nElige una opción (1-5): ").strip()
 
                 #registrar gasto
                 if sub_opcion == "1":        
@@ -158,13 +188,12 @@ def main():
                         monto = int(input("Monto: "))
                         gasto.agregar_detalle(item, monto)
 
-                        otro = input("Agregar otro item? (si/no): ").strip().lower()
+                        otro = input("\nAgregar otro item? (si/no): ").strip().lower()
                         if otro != "si":
                             break
 
-                    print("Gasto registrado ✅")
+                    print("\nGasto registrado ✅")
                     print(gasto.mostrar())
-
 
                 #ver gasto especifico
                 elif sub_opcion == "2":
@@ -177,23 +206,35 @@ def main():
                     if encontrado:
                         print(encontrado.mostrar())
                     else:
-                        print("Gasto no encontrado 😥")                
-
+                        print("\nGasto no encontrado 😥")                
 
                 #ver todos los gastos
                 elif sub_opcion == "3":
                     if not app.gastos:
-                        print("Aún no hay gastos registrados 😑")
+                        print("\nAún no hay gastos registrados 😑")
                     else:
                         for c in app.gastos:
                             print(c.mostrar())
 
-                #volver
+                #eliminar gasto
                 elif sub_opcion == "4":
-                    break
+                    buscar = input("Nombre de la actividad a eliminar: ")
+                    encontrado = None
+                    for i in app.gastos:
+                        if i.nombre.lower() == buscar.lower():
+                            encontrado = i
+                            break
+                    if encontrado:
+                        app.gastos.remove(encontrado)
+                        print("\nGasto eliminado ✅")
+                    else:
+                        print("\nGasto no encontrado 😥")
 
+                #volver
+                elif sub_opcion == "5":
+                    break
                 else:
-                    print("Ingresa una opción válida ❌")                    
+                    print("\nIngresa una opción válida ❌")                    
 
 
 
