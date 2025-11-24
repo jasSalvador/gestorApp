@@ -1,0 +1,51 @@
+<!--hereda del archivo base.html-->
+{% extends 'base.html' %}
+<!-- archivos estaticos -->
+{% load static %}
+
+<!-- titulo-->
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<div class="row container text-center py-5 mx-auto mb-5">
+    <h1 class="my-5">Registro de usuario</h1>
+    <!-- capturando error -->
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <form method="POST" class="w-75 border p-5 bg-light text-center mx-auto">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input type="text" class="form-control" name="username" id="username" placeholder="Nombre" required>
+        </div>
+        <div class="mb-3">
+            <input type="email" class="form-control" name="email" id="email" placeholder="Correo electrónico" required>
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" name="userphone" id="userphone" placeholder="Teléfono" required>
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" name="useradress" id="useradress" placeholder="Dirección">
+        </div>
+        <div class="mb-3">
+            <label for="dependiente">Responde solo si eres apoderado o tutor de un menor</label>
+            <input type="text" class="form-control" name="dependiente" id="dependiente" placeholder="Nombre dependiente">
+        </div>
+        <div class="mb-3">
+            <label for="org_id">Organización:</label>
+            <select name="org_id" id="org_id" required>
+                {% for org in organizaciones %}
+                    <option value="{{ org.id }}">{{ org.nombre }} ({{ org.tipo }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <input type="password" class="form-control" name="password1" id="password1" placeholder="Contraseña" required>
+        </div>
+        <div class="mb-3">
+            <input type="password" class="form-control" name="password2" id="password2" placeholder="Contraseña" required>
+        </div>
+        <button type="submit" class="btn btn-success mt-5">Registrarse</button>
+    </form>
+</div>
+{% endblock %}

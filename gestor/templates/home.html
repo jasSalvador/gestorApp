@@ -1,0 +1,35 @@
+<!--hereda del archivo base.html-->
+{% extends 'base.html' %} 
+{% load static %}
+
+<!-- titulo: inicio -->
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- mensaje -->
+{% if messages %}
+{% for message in messages %}
+<!-- <div class="alert alert-success mt-3">{{ message }}</div> -->
+{% endfor %}
+{% endif %}
+
+<div class="container text-center py-5 mx-auto">
+    <h1 class="my-3 fw-bold">Bienvenid@ a GestorApp!</h1>
+    <p class="my-5 fs-5">GestorAPP es una plataforma pensada para administrar cuotas, pagos y gastos de forma 
+        sencilla. Aquí podrás organizar la información de tu <strong>junta de vecinos</strong>,
+        <strong>curso escolar</strong> o cualquier organización comunitaria, todo en un solo lugar.
+    </p>
+    <div class="border border-secondary bg-light p-5 mb-5">
+        <h3>Como quieres comenzar?</h3>
+        <p class="mt-3">Si eres presidente, tesorero/a o responsable de un grupo, primero debes <strong>registrar tu organización</strong>
+            y <strong>registrarte como administrador</strong>. Luego los integrantes podrán crear su cuenta y unirse a ella.
+        </p>
+
+        <div class="d-flex justify-content-center gap-5 mt-5">
+            <a href="{% url 'registro_organizacion' %}" class="btn btn-info btn-lg">Registrar organización</a>
+            <a href="{% url 'registro_usuario' %}" class="btn btn-primary btn-lg">Registro de usuarios</a>
+        </div>        
+    </div>
+</div>
+{% endblock %}
