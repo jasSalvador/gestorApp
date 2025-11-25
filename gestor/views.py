@@ -37,7 +37,7 @@ def logout_view(request):
 
 
 #registro de administradores
-def registro_org_view(request):
+def registro_admin_view(request):
     if request.method == 'POST':
         #datos del administrador
         username = request.POST['username']
@@ -80,7 +80,7 @@ def registro_org_view(request):
             messages.error(request, f'Ah ocurrido un error: {str(e)}')
             return render(request, 'registro.html')
     
-    return render(request, 'registro.html')
+    return render(request, 'registroadmin.html')
 
 
 #registro usuarios
@@ -122,7 +122,7 @@ def registro_view(request):
             return render(request, 'registro.html')
     
     organizaciones = Organizacion.objects.all()
-    return render(request, 'registro.html', {'organzaciones': organizaciones})
+    return render(request, 'registro.html', {'organizaciones': organizaciones})
 
 
 

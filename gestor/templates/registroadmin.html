@@ -4,12 +4,14 @@
 {% load static %}
 
 <!-- titulo-->
-{% block title %}Registro{% endblock %}
+{% block title %}Registro Administradores{% endblock %}
 
 {% block content %}
 <div class="row container text-center py-5 mx-auto mb-5">
-    <h1 class="mt-5">Registro de usuario</h1>
-    <p class="fs-5 mt-3 px-5">Crea tu cuenta de usuario para unirte a una organización existente.</p>
+    <h1 class="mt-5">Registro administradores</h1>
+    <p class="fs-5 mt-3 px-5">Crea la ficha de tu organización y tu cuenta de administrador como responsable
+        de gestionar los integrantes de tu agrupación.
+    </p>
 
     <!-- mostrando error -->
     {% if error %}
@@ -17,6 +19,17 @@
     {% endif %}
     <form method="POST" class="w-75 border p-5 bg-light text-center mx-auto">
         {% csrf_token %}
+        <!-- datos organizacion -->
+        <h4 class="my-3 text-start">Datos de la organización</h4>
+        <div class="mb-3">
+            <input type="text" class="form-control" name="nombre_org" id="nombre_org" placeholder="Nombre de la organización" required>
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" name="tipo_org" id="tipo_org" placeholder="Tipo de organización (ej: curso, club, junta vecinos)" required>
+        </div>
+
+        <!-- datos del admin -->
+        <h4 class="my-3 text-start">Datos del administrador</h4>
         <div class="mb-3">
             <input type="text" class="form-control" name="username" id="username" placeholder="Nombre" required>
         </div>
@@ -32,15 +45,6 @@
         <div class="mb-3">
             <label for="dependiente" class="form-label d-block text-start">Responde solo si tu registro es como apoderado o tutor de un menor</label>
             <input type="text" class="form-control" name="dependiente" id="dependiente" placeholder="Nombre del menor">
-        </div>
-        <div class="mb-3">
-            <label for="org_id" class="form-label d-block text-start">Organización:</label>
-            <select name="org_id" id="org_id" class="form-label d-block text-start" required>
-                <option value="" disabled selected>Selecciona una opción</option>
-                {% for org in organizaciones %}
-                    <option value="{{ org.id }}">{{ org.nombre }} ({{ org.tipo }})</option>
-                {% endfor %}
-            </select>
         </div>
         <div class="mb-3">
             <input type="password" class="form-control" name="password1" id="password1" placeholder="Contraseña" required>

@@ -10,7 +10,7 @@
 <!-- mensaje -->
 {% if messages %}
 {% for message in messages %}
-<!-- <div class="alert alert-success mt-3">{{ message }}</div> -->
+    <div class="alert alert-success mt-3">{{ message }}</div>
 {% endfor %}
 {% endif %}
 
@@ -34,7 +34,7 @@
         {% endfor %}
     </div>
     {% else %}
-    <p class="mt-5">No hay tareas disponibles</p>
+    <p class="mt-5">Aún no hay datos disponibles</p>
     {% endif %}
 </div>
 {% endblock %}
