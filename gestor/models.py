@@ -24,12 +24,29 @@ class Integrante(models.Model):
 
 #cuota
 class Cuota(models.Model):
-    integrante = models.ForeignKey(Integrante, on_delete=models.CASCADE)
+    meses = [
+        ("Enero", "Enero"),
+        ("Febrero","Febrero"),
+        ("Marzo","Marzo"),
+        ("Abril","Abril"),
+        ("Mayo","Mayo"),
+        ("Junio","Junio"),
+        ("Julio","Julio"),
+        ("Agosto","Agosto"),
+        ("Septiembre","Septiembre"),
+        ("Octubre","Octubre"),
+        ("Noviembre","Noviembre"),
+        ("Diciembre","Diciembre"),
+    ]
+    integrante = models.ForeignKey(Integrante, on_delete=models.CASCADE, related_name="cuotas")
     monto = models.DecimalField(max_digits=10, decimal_places=2 )
     fecha_pago = models.DateField()
+    mes_pagado = models.CharField(max_length=15, choices=meses)
+    anio_pagado = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"Cuota de {self.integrante.user.username} - ${self.monto} ({self.fecha_pago})"
+        return f"Cuota de {self.integrante.user.username} - ${self.monto} ({self.mes_pagado}) {self.anio_pagado}, fecha pago: ({self.fecha_pago})"
+
 
 
 #gasto
