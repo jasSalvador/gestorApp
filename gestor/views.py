@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Integrante, Organizacion
+from .models import Integrante, Organizacion, Cuota
 
 
 #home
@@ -13,7 +13,16 @@ def home(request):
 #inicio
 @login_required 
 def inicio(request):
-    return render(request, 'inicio.html')
+    integrante = Integrante.objects.get(user=request.user)
+    organizacion = integrante.organizacion
+    return render(request, 'inicio.html', {"organizacion": organizacion})
+
+
+def inicio(request):
+    integrante = Integrante.objects.get(user=request.user)
+    organizacion = integrante.organizacion
+    return render(request, "inicio.html", {"organizacion": organizacion})
+
 
 #login
 def login_view(request):
@@ -124,5 +133,22 @@ def registro_view(request):
     organizaciones = Organizacion.objects.all()
     return render(request, 'registro.html', {'organizaciones': organizaciones})
 
+
+#mostrar cuotas pagadas de cada integrante
+def cuotas_view(request):
+    integrante = Integrante.objects.get(user=request.user)
+    cuotas = integrante.cuotas.all()
+    organizacion = integrante.organizacion
+    integrante = Integrante.objects.filter(organizacion=organizacion)
+    return render(request, "cuotas.html", {"organizacion": organizacion, "integrante": integrante, "cuotas": cuotas})
+
+
+
+#mostrar integrantes
+def integrantes_view(request):
+    integrante = Integrante.objects.get(user=request.user)
+    organizacion = integrante.organizacion
+    integrantes = Integrante.objects.filter(organizacion=organizacion)
+    return render(request, "integrantes.html", {"organizacion": organizacion, "integrantes": integrantes})
 
 
