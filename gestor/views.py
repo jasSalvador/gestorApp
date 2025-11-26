@@ -18,11 +18,6 @@ def inicio(request):
     return render(request, 'inicio.html', {"organizacion": organizacion})
 
 
-def inicio(request):
-    integrante = Integrante.objects.get(user=request.user)
-    organizacion = integrante.organizacion
-    return render(request, "inicio.html", {"organizacion": organizacion})
-
 
 #login
 def login_view(request):
@@ -135,6 +130,7 @@ def registro_view(request):
 
 
 #mostrar cuotas pagadas de cada integrante
+@login_required 
 def cuotas_view(request):
     integrante = Integrante.objects.get(user=request.user)
     cuotas = integrante.cuotas.all()
@@ -145,6 +141,7 @@ def cuotas_view(request):
 
 
 #mostrar integrantes
+@login_required 
 def integrantes_view(request):
     integrante = Integrante.objects.get(user=request.user)
     organizacion = integrante.organizacion
@@ -154,6 +151,7 @@ def integrantes_view(request):
 
 
 #form pago cuotas
+@login_required 
 def pago_cuotas_view(request):
     if request.method == 'POST':
         form = CuotaForm(request.POST)
@@ -169,6 +167,7 @@ def pago_cuotas_view(request):
 
 
 #form gasto
+@login_required 
 def registro_gasto_view(request):
     if request.method == 'POST':
         gasto_form = GastoForm(request.POST)
@@ -184,6 +183,7 @@ def registro_gasto_view(request):
 
 
 #form item gasto
+@login_required 
 def registro_item_gasto_view(request, gasto_id):
     gasto = Gasto.objects.get(id=gasto_id)
     if request.method == 'POST':
@@ -198,3 +198,6 @@ def registro_item_gasto_view(request, gasto_id):
         item_form = ItemGastoForm()
     
     return render(request, 'registro_item_gasto.html', {'form': item_form, 'gasto': gasto})
+
+
+
