@@ -48,7 +48,6 @@ class Cuota(models.Model):
         return f"Cuota de {self.integrante.user.username} - ${self.monto} ({self.mes_pagado}) {self.anio_pagado}, fecha pago: ({self.fecha_pago})"
 
 
-
 #gasto
 class Gasto(models.Model):
     organizacion = models.ForeignKey(Organizacion, on_delete=models.CASCADE)
