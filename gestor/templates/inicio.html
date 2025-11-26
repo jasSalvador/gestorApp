@@ -28,8 +28,9 @@
                         <hr>
                         <h6 class="card-text"><span class="fw-bold fs-5">Tipo: </span> {{ organizacion.tipo }}</h6>
                         <hr>
-                        <div class="text-center mx-auto">
+                        <div class="d-flex flex-column gap-2 text-center mx-auto">
                             <a href="{% url 'cuotas' %}" class="btn btn-info">Ver tus cuotas pagadas</a>
+                            <a href="{% url 'lista_gastos' %}" class="btn btn-primary">Ver todos los gastos</a>
                         </div>
                     </div>
                 </div>

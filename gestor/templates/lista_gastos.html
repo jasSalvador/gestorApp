@@ -3,7 +3,7 @@
 {% load static %}
 
 <!-- titulo: inicio -->
-{% block title %}Lista integrantes{% endblock %}
+{% block title %}Lista gastos{% endblock %}
 
 {% block content %}
 
@@ -15,40 +15,35 @@
 {% endif %}
 
 <div class="container text-center py-5 mx-auto">
-    <h1 class="mt-3 fs-3">Integrantes registrados en: <span class="fs-2">{{organizacion.nombre}} 📌</span></h1>
+    <h1 class="mt-3 fs-3">Gastos registrados 📌</h1>
 
     <div class="d-flex flex-column justify-content-center align-items-center mx-auto gap-3">
         <div class="bg-light my-5">
-
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Telefono</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Dirección</th>
-                        <th scope="col">Menor dependiente</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% if integrantes %}
-                        {% for integrante in integrantes %}
+                    {% if gastos %}
+                        {% for gasto in gastos %}
                         <tr>
                             <th scope="row">1</th>
-                            <td>{{ integrante.user.username }}</td>
-                            <td>{{ integrante.user.email }}</td>
-                            <td>{{ integrante.direccion }}</td>
-                            <td>{{ integrante.telefono }}</td>
-                            <td>{{ integrante.dependiente }}</td>
+                            <td>{{ gasto.nombre }}</td>
+                            <td>{{ gasto.fecha }}</td>
+                            <td>{{ gasto.total }}</td>
                             <td>
-                                <a href="" class="btn btn-danger">Eliminar integrante</a>
-                            </td>                            
+                                <a href="{% url 'detalle_gasto' gasto.id %}" class="btn btn-primary">Ver detalles</a>
+                            </td>
                         </tr>
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="6" class="text-center">Aún no hay integrantes registrados</td>
+                            <td colspan="6" class="text-center">Aún no hay gastos registrados</td>
                         </tr>
                     {% endif %}
                 </tbody>

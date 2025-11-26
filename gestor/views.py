@@ -201,3 +201,16 @@ def registro_item_gasto_view(request, gasto_id):
 
 
 
+#mostrar lista de gastos
+def lista_gastos_view(request):
+    gastos = Gasto.objects.all()
+    return render(request, 'lista_gastos.html', {'gastos': gastos})
+
+
+
+#detalles de gasto /items
+def detalle_gasto_view(request, gasto_id):
+    gasto = Gasto.objects.get(id=gasto_id)
+    items = gasto.items.all()
+    return render(request, 'detalle_gasto.html', {'gasto': gasto, 'items': items})
+
