@@ -54,8 +54,8 @@
     <div class="mt-4">
         <h4>Opciones administrativas</h4>
         <a href="{% url 'integrantes' %}" class="btn btn-info mb-1 ">Ver integrantes</a>
-        <a href="#" class="btn btn-primary mb-1">Registrar cuota</a>
-        <a href="#" class="btn btn-warning mb-1">Registrar gasto</a>
+        <a href="{% url 'pago_cuotas' %}" class="btn btn-primary mb-1">Registrar cuota</a>
+        <a href="{% url 'registro_gasto' %}" class="btn btn-warning mb-1">Registrar gasto</a>
     </div>
     {% endif %}
 </div>

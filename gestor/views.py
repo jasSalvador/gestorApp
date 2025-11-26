@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Integrante, Organizacion, Cuota
-
+from .models import Integrante, Organizacion, Cuota, Gasto, ItemGasto
+from .forms import CuotaForm, GastoForm, ItemGastoForm
 
 #home
 def home(request):
@@ -89,7 +89,7 @@ def registro_admin_view(request):
             messages.error(request, f'Ah ocurrido un error: {str(e)}')
             return render(request, 'registro.html')
     
-    return render(request, 'registroadmin.html')
+    return render(request, 'registro_admin.html')
 
 
 #registro usuarios
@@ -152,3 +152,49 @@ def integrantes_view(request):
     return render(request, "integrantes.html", {"organizacion": organizacion, "integrantes": integrantes})
 
 
+
+#form pago cuotas
+def pago_cuotas_view(request):
+    if request.method == 'POST':
+        form = CuotaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Pago registrado!')
+            return redirect('inicio')
+    else:
+        form = CuotaForm()
+
+    return render(request, 'pago_cuotas.html', {'form': form})
+
+
+
+#form gasto
+def registro_gasto_view(request):
+    if request.method == 'POST':
+        gasto_form = GastoForm(request.POST)
+        if gasto_form.is_valid():
+            gasto = gasto_form.save()
+            messages.success(request, 'Gasto registrado, ahora puedes agregar items al gasto')
+            return redirect('registro_item_gasto', gasto_id=gasto.id)
+    else:
+        gasto_form = GastoForm()
+    
+    return render(request, 'registro_gasto.html', {'form': gasto_form})
+
+
+
+#form item gasto
+def registro_item_gasto_view(request, gasto_id):
+    gasto = Gasto.objects.get(id=gasto_id)
+    if request.method == 'POST':
+        item_form = ItemGastoForm(request.POST)    
+        if item_form.is_valid():
+            item = item_form.save(commit=False)
+            item.gasto = gasto
+            item.save()
+            messages.success(request, 'Item agregado!')
+            return redirect('registro_item_gasto', gasto_id=gasto.id)
+    else:
+        item_form = ItemGastoForm()
+    
+    return render(request, 'registro_item_gasto.html', {'form': item_form, 'gasto': gasto})
