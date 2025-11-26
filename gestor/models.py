@@ -22,3 +22,39 @@ class Integrante(models.Model):
         return f"{self.user.username} - {self.organizacion.nombre}"
     
 
+#cuota
+class Cuota(models.Model):
+    integrante = models.ForeignKey(Integrante, on_delete=models.CASCADE)
+    monto = models.DecimalField(max_digits=10, decimal_places=2 )
+    fecha_pago = models.DateField()
+
+    def __str__(self):
+        return f"Cuota de {self.integrante.user.username} - ${self.monto} ({self.fecha_pago})"
+
+
+#gasto
+class Gasto(models.Model):
+    organizacion = models.ForeignKey(Organizacion, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=100)
+    fecha = models.DateField()
+
+    #sumar todos los items de gastos asociados
+    def total(self):
+        return sum(item.monto for item in self.items.all())
+
+    def __str__(self):
+        return f"{self.nombre} ({self.fecha})"
+
+
+#item de gasto
+class ItemGasto(models.Model):
+    gasto = models.ForeignKey(Gasto, on_delete=models.CASCADE, related_name="items")
+    nombre = models.CharField(max_length=100)
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.nombre}: ${self.monto}"
+    
+
+
+
