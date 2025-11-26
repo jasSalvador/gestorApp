@@ -9,11 +9,11 @@ Como **primera etapa**: 'Fundamentos de programación en Python', he desarrollad
 **Tercera etapa**: 'Desarrollo de aplicaciones web con Python y Django'. He migrado todo el proyecto a Django, cree una app "gestor" donde he implementado los modelos, rutas, vistas y templates, integrando base de datos SQLite3. Además he implementado formularios de registro para administradores e integrantes, con login y vistas protegidas.
 
 ## Modelos 💫
-**Integrante**: persona que pertenece a una organización, con datos personales y relación a cuotas.
-**Organización**: representa la comunidad o grupo que usa la aplicación y centraliza, integrantes, cuotas y gastos.
-**Cuota**: pago realizado por un integrante, asociado a mes, año y organización.
-**Gasto**: registro de un gasto de la organización, con nombre, fecha, total y sus items asociados.
-**ItemGasto**: detalle específico dentro de un gasto, con nombre y monto, vinculado al gasto correspondiente.
+- **Integrante**: persona que pertenece a una organización, con datos personales y relación a cuotas.
+- **Organización**: representa la comunidad o grupo que usa la aplicación y centraliza, integrantes, cuotas y gastos.
+- **Cuota**: pago realizado por un integrante, asociado a mes, año y organización.
+- **Gasto**: registro de un gasto de la organización, con nombre, fecha, total y sus items asociados.
+- **ItemGasto**: detalle específico dentro de un gasto, con nombre y monto, vinculado al gasto correspondiente.
 
 ## Funcionalidades actuales 🚀
 
