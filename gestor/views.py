@@ -7,6 +7,10 @@ from .models import Integrante, Organizacion, Cuota, Gasto, ItemGasto
 from .forms import CuotaForm, GastoForm, ItemGastoForm, IntegranteForm
 from django.http import HttpResponseForbidden
 
+#==================================================
+# vistas de autenticacion
+#==================================================
+
 #home
 def home(request):
     return render(request, 'home.html')
@@ -14,10 +18,10 @@ def home(request):
 #inicio
 @login_required 
 def inicio(request):
+    # obtener integrante asociado al usuario logueado
     integrante = Integrante.objects.get(user=request.user)
     organizacion = integrante.organizacion
     return render(request, 'inicio.html', {"organizacion": organizacion, "integrante": integrante})
-
 
 #login
 def login_view(request):
@@ -33,12 +37,10 @@ def login_view(request):
             return render(request, 'login.html', {'error': 'Credenciales inválidas'})
     return render(request, 'login.html')
 
-
 #logout
 def logout_view(request): 
     logout(request)  
     return redirect('login')
-
 
 #registro de administradores
 def registro_admin_view(request):
@@ -86,7 +88,6 @@ def registro_admin_view(request):
     
     return render(request, 'registro_admin.html')
 
-
 #registro usuarios
 def registro_view(request):
     if request.method == 'POST':
@@ -129,6 +130,71 @@ def registro_view(request):
     return render(request, 'registro.html', {'organizaciones': organizaciones})
 
 
+#==================================================
+# vistas de integrantes
+#==================================================
+
+#mostrar integrantes
+@login_required 
+def integrantes_view(request):
+    integrante = get_object_or_404(Integrante, user=request.user)
+    organizacion = integrante.organizacion
+    # validacion, solo el admin_local puede acceder
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+
+    integrantes = Integrante.objects.filter(organizacion=organizacion)
+    return render(request, "integrantes.html", {"organizacion": organizacion, "integrantes": integrantes})
+
+# eliminacion integrante
+@login_required
+def eliminar_integrante(request, integrante_id):
+    # obtener integrante asociado al usuario logueado
+    integrante = get_object_or_404(Integrante, id=integrante_id)
+    user = integrante.user
+
+    # integrante elimina su propia cuenta
+    if integrante.user == request.user:
+        integrante.delete()
+        user.delete()
+        return redirect('logout')
+
+    # admin elimina cualquier integrante q pertenezca a la organizacion
+    if request.user.is_staff or request.user.is_superuser:
+        integrante.delete()
+        user.delete()
+        messages.success(request, 'Se ha eliminado la cuenta')
+        return redirect('lista_integrantes')
+    
+    return HttpResponseForbidden("No tienes permiso para eliminar esta integrante")
+
+#confirmar eliminacion integrante
+@login_required
+def confirmar_eliminar_integrante_view(request, integrante_id):
+    # obtener integrante asociado al usuario logueado
+    integrante = get_object_or_404(Integrante, id=integrante_id)
+
+    return render(request, 'confirmar_eliminar_integrante.html', {'integrante': integrante})
+
+# editar integrante
+def editar_integrante_view(request):
+    # obtener integrante asociado al usuario logueado
+    integrante = get_object_or_404(Integrante, user=request.user)
+    if request.method == 'POST':
+        form = IntegranteForm(request.POST, instance=integrante)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'La cuenta fue actualizada exitosamente')
+            return redirect('inicio')
+    else:
+        form = IntegranteForm(instance=integrante)
+    return render(request, 'editar_integrante.html', {'form': form})
+
+
+#==================================================
+# vistas de cuotas
+#==================================================
+
 #mostrar cuotas pagadas de cada integrante
 @login_required 
 def cuotas_view(request):
@@ -138,27 +204,12 @@ def cuotas_view(request):
     integrante = Integrante.objects.filter(organizacion=organizacion)
     return render(request, "cuotas.html", {"organizacion": organizacion, "integrante": integrante, "cuotas": cuotas})
 
-
-
-#mostrar integrantes
-@login_required 
-def integrantes_view(request):
-    integrante = get_object_or_404(Integrante, user=request.user)
-    organizacion = integrante.organizacion
-    #vallidacion admin
-    if request.user != integrante.organizacion.admin_local:
-        return redirect('inicio')
-
-    integrantes = Integrante.objects.filter(organizacion=organizacion)
-    return render(request, "integrantes.html", {"organizacion": organizacion, "integrantes": integrantes})
-
-
-
 #form pago cuotas
 @login_required 
 def pago_cuotas_view(request):
+    # obtener integrante asociado al usuario logueado
     integrante = get_object_or_404(Integrante, user=request.user)
-    #validacion admin
+    # validacion, solo el admin_local puede acceder
     if request.user != integrante.organizacion.admin_local:
         return redirect('inicio')
 
@@ -166,20 +217,63 @@ def pago_cuotas_view(request):
         form = CuotaForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Pago registrado!')
+            messages.success(request, 'Se ha registrado el pago exitosamente!')
             return redirect('inicio')
     else:
         form = CuotaForm()
 
     return render(request, 'pago_cuotas.html', {'form': form})
 
+#mostrar todas las cuotas pagadas
+@login_required
+def lista_cuotas_view(request):
+    integrante = Integrante.objects.get(user=request.user)
+    # validacion, solo el admin_local puede acceder
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+    cuotas = Cuota.objects.filter(integrante__organizacion=integrante.organizacion)
+    return render(request, "lista_cuotas.html", {"cuotas": cuotas})
 
+#eliminar cuota
+@login_required
+def eliminar_cuota(request, cuota_id):
+    # obtener integrante asociado al usuario logueado
+    integrante = get_object_or_404(Integrante, user=request.user)
+    cuota = get_object_or_404(Cuota, id=cuota_id)
+    # validacion, solo el admin_local puede acceder
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+
+    if request.method == 'POST':
+        cuota.delete()
+        messages.success(request, 'Se ha eliminado el pago')
+        return redirect('lista_cuotas')
+
+    return render(request, 'eliminar_cuota.html', {'cuota': cuota})
+
+#confirmar eliminacion cuota
+@login_required
+def confirmar_eliminar_cuota_view(request, cuota_id):
+    # obtener integrante asociado al usuario logueado
+    integrante = get_object_or_404(Integrante, user=request.user)
+    cuota = get_object_or_404(Cuota, id=cuota_id)
+    # validacion, solo el admin_local puede acceder
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+    
+    return render(request, 'confirmar_eliminar_cuota.html', {'cuota': cuota})
+
+
+#==================================================
+# vistas de gasto
+#==================================================
 
 #form gasto
 @login_required 
 def registro_gasto_view(request):
+    # obtener integrante asociado al usuario logueado
     integrante = get_object_or_404(Integrante, user=request.user)
-    #vallidacion admin
+    # validacion, solo el admin_local puede acceder
     if request.user != integrante.organizacion.admin_local:
         return redirect('inicio')
 
@@ -194,14 +288,13 @@ def registro_gasto_view(request):
     
     return render(request, 'registro_gasto.html', {'form': gasto_form})
 
-
-
 #form item gasto
 @login_required 
 def registro_item_gasto_view(request, gasto_id):
+    # obtener integrante asociado al usuario logueado
     integrante = get_object_or_404(Integrante, user=request.user)
     gasto = get_object_or_404(Gasto, id=gasto_id)
-    #validacion admin
+    # validacion, solo el admin_local puede acceder
     if request.user != integrante.organizacion.admin_local:
         return redirect('inicio')
 
@@ -211,25 +304,22 @@ def registro_item_gasto_view(request, gasto_id):
             item = item_form.save(commit=False)
             item.gasto = gasto
             item.save()
-            messages.success(request, 'Item agregado!')
+            messages.success(request, 'Item agregado al gasto!')
             return redirect('registro_item_gasto', gasto_id=gasto.id)
     else:
         item_form = ItemGastoForm()
     
     return render(request, 'registro_item_gasto.html', {'form': item_form, 'gasto': gasto})
 
-
-
 #mostrar lista de gastos
 @login_required
 def lista_gastos_view(request):
+    # obtener integrante asociado al usuario logueado
     integrante = get_object_or_404(Integrante, user=request.user)
     organizacion = integrante.organizacion
     gastos = Gasto.objects.filter(organizacion=organizacion)
 
     return render(request, 'lista_gastos.html', {'gastos': gastos, 'organizacion': organizacion})
-
-
 
 #detalles de gasto /items
 @login_required
@@ -238,121 +328,30 @@ def detalle_gasto_view(request, gasto_id):
     items = gasto.items.all()
     return render(request, 'detalle_gasto.html', {'gasto': gasto, 'items': items})
 
-
-
-# eliminacion integrante
-@login_required
-def eliminar_integrante(request, integrante_id):
-    integrante = get_object_or_404(Integrante, id=integrante_id)
-    user = integrante.user
-
-    # integrante elimina su propia cuenta
-    if integrante.user == request.user:
-        integrante.delete()
-        user.delete()
-        return redirect('logout')
-
-    # admin elimina cualquier integrante q pertenezca a la organizacion
-    if request.user.is_staff or request.user.is_superuser:
-        integrante.delete()
-        user.delete()
-        messages.success(request, 'Cuenta eliminada')
-        return redirect('lista_integrantes')
-    
-    return HttpResponseForbidden("No tienes permiso para eliminar esta integrante")
-
-
-
-#confirmar eliminacion integrante
-@login_required
-def confirmar_eliminar_integrante_view(request, integrante_id):
-    integrante = get_object_or_404(Integrante, id=integrante_id)
-
-    return render(request, 'confirmar_eliminar_integrante.html', {'integrante': integrante})
-
-
-
-# editar integrante
-def editar_integrante_view(request):
-    integrante = get_object_or_404(Integrante, user=request.user)
-    if request.method == 'POST':
-        form = IntegranteForm(request.POST, instance=integrante)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Cuenta actualizada')
-            return redirect('inicio')
-    else:
-        form = IntegranteForm(instance=integrante)
-    return render(request, 'editar_integrante.html', {'form': form})
-
-
-
-#mostrar todas las cuotas pagadas
-@login_required
-def lista_cuotas_view(request):
-    integrante = Integrante.objects.get(user=request.user)
-    # validacion
-    if request.user != integrante.organizacion.admin_local:
-        return redirect('inicio')
-    cuotas = Cuota.objects.filter(integrante__organizacion=integrante.organizacion)
-    return render(request, "lista_cuotas.html", {"cuotas": cuotas})
-
-
-
-#eliminar cuota
-@login_required
-def eliminar_cuota(request, cuota_id):
-    integrante = get_object_or_404(Integrante, user=request.user)
-    cuota = get_object_or_404(Cuota, id=cuota_id)
-    # validacion
-    if request.user != integrante.organizacion.admin_local:
-        return redirect('inicio')
-
-    if request.method == 'POST':
-        cuota.delete()
-        messages.success(request, 'Cuota eliminada')
-        return redirect('lista_cuotas')
-
-    return render(request, 'eliminar_cuota.html', {'cuota': cuota})
-
-
-#confirmar eliminacion cuota
-@login_required
-def confirmar_eliminar_cuota_view(request, cuota_id):
-    integrante = get_object_or_404(Integrante, user=request.user)
-    cuota = get_object_or_404(Cuota, id=cuota_id)
-    # validacion
-    if request.user != integrante.organizacion.admin_local:
-        return redirect('inicio')
-    
-    return render(request, 'confirmar_eliminar_cuota.html', {'cuota': cuota})
-
-
-
 # eliminar gasto
 @login_required
 def eliminar_gasto(request, gasto_id):
+    # obtener integrante asociado al usuario logueado
     integrante = get_object_or_404(Integrante, user=request.user)
     gasto = get_object_or_404(Gasto, id=gasto_id)
-    # validacion
+    # validacion, solo el admin_local puede acceder
     if request.user != integrante.organizacion.admin_local:
         return redirect('inicio')
 
     if request.method == 'POST':
         gasto.delete()
-        messages.success(request, 'Gasto eliminado')
+        messages.success(request, 'Gasto eliminado exitosamente')
         return redirect('lista_gastos')
 
     return render(request, 'eliminar_gasto.html', {'gasto': gasto})
 
-
-
 # confirmar eliminacion gasto
 @login_required
 def confirmar_eliminar_gasto_view(request, gasto_id):
+    # obtener integrante asociado al usuario logueado
     integrante = get_object_or_404(Integrante, user=request.user)
     gasto = get_object_or_404(Gasto, id=gasto_id)
-    # validacion
+    # validacion, solo el admin_local puede acceder
     if request.user != integrante.organizacion.admin_local:
         return redirect('inicio')
     
