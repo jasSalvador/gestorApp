@@ -30,7 +30,7 @@
                             <td>{{ cuota.mes_pagado }} {{ cuota.anio_pagado }}</td>
                             <td>{{ cuota.fecha_pago }}</td>
                             <td>
-                                <a href="" class="btn btn-danger">Eliminar pago</a>
+                                <a href="{% url 'confirmar_eliminar_cuota' cuota.id %}" class="btn btn-danger">Eliminar pago</a>
                             </td>                            
                         </tr>
                         {% endfor %}

@@ -39,6 +39,12 @@
                             <td>
                                 <a href="{% url 'detalle_gasto' gasto.id %}" class="btn btn-primary">Ver detalles</a>
                             </td>
+                            <!-- eliminar gasto solo admin -->
+                            {% if request.user == organizacion.admin_local %}
+                            <td>
+                                <a href="{% url 'confirmar_eliminar_gasto' gasto.id %}" class="btn btn-danger">Eliminar gasto</a>
+                            </td>  
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     {% else %}

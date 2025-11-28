@@ -1,14 +1,14 @@
 {% extends 'base.html' %} 
 
-{% block title %}Eliminar integrante{% endblock %}
+{% block title %}Eliminar Gasto{% endblock %}
 
 {% block content %}
 <div class="w-50 my-5 p-4 border border-secondary rounded-3 bg-light text-center mx-auto">
-    <h2 class="mb-4">Eliminar cuenta</h2>
-    <p>Estás seguro de eliminar la cuenta?</p>
+    <h2 class="mb-4">Eliminar gasto: {{ gasto.nombre }}</h2>
+    <p>Estás seguro de eliminar el gasto?</p>
     <p>Esta acción no se puede deshacer ⚠</p>
 
-    <form method="POST" action="{% url 'eliminar_integrante' integrante.id %}">
+    <form method="POST" action="{% url 'eliminar_gasto' gasto.id %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Eliminar</button>
         <a href="{% url 'inicio' %}" class="btn btn-secondary ms-2">Cancelar</a>

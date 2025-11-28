@@ -223,8 +223,11 @@ def registro_item_gasto_view(request, gasto_id):
 #mostrar lista de gastos
 @login_required
 def lista_gastos_view(request):
-    gastos = Gasto.objects.all()
-    return render(request, 'lista_gastos.html', {'gastos': gastos})
+    integrante = get_object_or_404(Integrante, user=request.user)
+    organizacion = integrante.organizacion
+    gastos = Gasto.objects.filter(organizacion=organizacion)
+
+    return render(request, 'lista_gastos.html', {'gastos': gastos, 'organizacion': organizacion})
 
 
 
@@ -253,6 +256,7 @@ def eliminar_integrante(request, integrante_id):
     if request.user.is_staff or request.user.is_superuser:
         integrante.delete()
         user.delete()
+        messages.success(request, 'Cuenta eliminada')
         return redirect('lista_integrantes')
     
     return HttpResponseForbidden("No tienes permiso para eliminar esta integrante")
@@ -275,6 +279,7 @@ def editar_integrante_view(request):
         form = IntegranteForm(request.POST, instance=integrante)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Cuenta actualizada')
             return redirect('inicio')
     else:
         form = IntegranteForm(instance=integrante)
@@ -286,6 +291,7 @@ def editar_integrante_view(request):
 @login_required
 def lista_cuotas_view(request):
     integrante = Integrante.objects.get(user=request.user)
+    # validacion
     if request.user != integrante.organizacion.admin_local:
         return redirect('inicio')
     cuotas = Cuota.objects.filter(integrante__organizacion=integrante.organizacion)
@@ -293,5 +299,62 @@ def lista_cuotas_view(request):
 
 
 
+#eliminar cuota
+@login_required
+def eliminar_cuota(request, cuota_id):
+    integrante = get_object_or_404(Integrante, user=request.user)
+    cuota = get_object_or_404(Cuota, id=cuota_id)
+    # validacion
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
 
+    if request.method == 'POST':
+        cuota.delete()
+        messages.success(request, 'Cuota eliminada')
+        return redirect('lista_cuotas')
+
+    return render(request, 'eliminar_cuota.html', {'cuota': cuota})
+
+
+#confirmar eliminacion cuota
+@login_required
+def confirmar_eliminar_cuota_view(request, cuota_id):
+    integrante = get_object_or_404(Integrante, user=request.user)
+    cuota = get_object_or_404(Cuota, id=cuota_id)
+    # validacion
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+    
+    return render(request, 'confirmar_eliminar_cuota.html', {'cuota': cuota})
+
+
+
+# eliminar gasto
+@login_required
+def eliminar_gasto(request, gasto_id):
+    integrante = get_object_or_404(Integrante, user=request.user)
+    gasto = get_object_or_404(Gasto, id=gasto_id)
+    # validacion
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+
+    if request.method == 'POST':
+        gasto.delete()
+        messages.success(request, 'Gasto eliminado')
+        return redirect('lista_gastos')
+
+    return render(request, 'eliminar_gasto.html', {'gasto': gasto})
+
+
+
+# confirmar eliminacion gasto
+@login_required
+def confirmar_eliminar_gasto_view(request, gasto_id):
+    integrante = get_object_or_404(Integrante, user=request.user)
+    gasto = get_object_or_404(Gasto, id=gasto_id)
+    # validacion
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+    
+    return render(request, 'confirmar_eliminar_gasto.html', {'gasto': gasto})
 
