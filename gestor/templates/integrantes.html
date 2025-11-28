@@ -19,7 +19,6 @@
 
     <div class="d-flex flex-column justify-content-center align-items-center mx-auto gap-3">
         <div class="bg-light my-5">
-
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -42,7 +41,7 @@
                             <td>{{ integrante.telefono }}</td>
                             <td>{{ integrante.dependiente }}</td>
                             <td>
-                                <a href="" class="btn btn-danger">Eliminar integrante</a>
+                                <a href="{% url 'confirmar_eliminar_integrante' integrante.id %}" class="btn btn-danger">Eliminar integrante</a>
                             </td>                            
                         </tr>
                         {% endfor %}

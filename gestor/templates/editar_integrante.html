@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+<!-- archivos estaticos -->
+{% load static %}
+
+<!-- titulo-->
+{% block title %}Editar integrante{% endblock %}
+
+{% block content %}
+<div class="row container text-center mx-auto my-5">
+    <h1 class="">Editar datos</h1>
+
+    <!-- mostrando errores -->
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        {{ form.errors }}
+    </div>
+    {% endif %}
+    <form method="POST" class="w-75 border p-5 bg-light text-center mx-auto">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success mt-4">Guardar</button>
+    </form>
+    <div class="text-center mx-auto mt-2">
+        <a href="{% url 'inicio' %}" class="btn btn-info">Volver a inicio</a>
+    </div>
+</div>
+{% endblock %}

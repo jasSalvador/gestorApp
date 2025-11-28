@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Integrante, Organizacion, Cuota, Gasto, ItemGasto
-from .forms import CuotaForm, GastoForm, ItemGastoForm
+from .forms import CuotaForm, GastoForm, ItemGastoForm, IntegranteForm
+from django.http import HttpResponseForbidden
 
 #home
 def home(request):
@@ -15,8 +16,7 @@ def home(request):
 def inicio(request):
     integrante = Integrante.objects.get(user=request.user)
     organizacion = integrante.organizacion
-    return render(request, 'inicio.html', {"organizacion": organizacion})
-
+    return render(request, 'inicio.html', {"organizacion": organizacion, "integrante": integrante})
 
 
 #login
@@ -213,4 +213,50 @@ def detalle_gasto_view(request, gasto_id):
     gasto = Gasto.objects.get(id=gasto_id)
     items = gasto.items.all()
     return render(request, 'detalle_gasto.html', {'gasto': gasto, 'items': items})
+
+
+
+# eliminacion integrante
+@login_required
+def eliminar_integrante(request, integrante_id):
+    integrante = get_object_or_404(Integrante, id=integrante_id)
+    user = integrante.user
+
+    # integrante elimina su propia cuenta
+    if integrante.user == request.user:
+        integrante.delete()
+        user.delete()
+        return redirect('logout')
+
+    # admin elimina cualquier integrante q pertenezca a la organizacion
+    if request.user.is_staff or request.user.is_superuser:
+        integrante.delete()
+        user.delete()
+        return redirect('lista_integrantes')
+    
+    return HttpResponseForbidden("No tienes permiso para eliminar esta integrante")
+
+
+
+#confirmar eliminacion integrante
+@login_required
+def confirmar_eliminar_integrante_view(request, integrante_id):
+    integrante = get_object_or_404(Integrante, id=integrante_id)
+
+    return render(request, 'confirmar_eliminar_integrante.html', {'integrante': integrante})
+
+
+
+# editar integrante
+def editar_integrante_view(request):
+    integrante = get_object_or_404(Integrante, user=request.user)
+    if request.method == 'POST':
+        form = IntegranteForm(request.POST, instance=integrante)
+        if form.is_valid():
+            form.save()
+            return redirect('inicio')
+    else:
+        form = IntegranteForm(instance=integrante)
+    return render(request, 'editar_integrante.html', {'form': form})
+
 
