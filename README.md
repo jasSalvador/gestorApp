@@ -121,8 +121,8 @@ El proyecto incluye templates en Django para:
 2. Una vez exista una organización, se pueden registrar integrantes para dicha organización
 3. Accede a `login` e inicia sesión
 
-- **Flujo de administrador**:
-En `inicio` están todos los acceso a todas las funcionalidades de la app:
+-**Flujo de administrador**:
+- En `inicio` están todos los acceso a todas las funcionalidades de la app:
 - Crear una organización al registrarse
 - Ver listado de todos los integrantes con opción para eliminar
 - Ver listado de todas las cuotas pagadas con opción para eliminar
@@ -134,14 +134,14 @@ En `inicio` están todos los acceso a todas las funcionalidades de la app:
 - Editar cuenta
 - Eliminar cuenta
 
-- **Flujo integrantes**:
+-**Flujo integrantes**:
 - Registrarse en la organización correspondiente
 - Ver todos los gastos de la organización con acceso a detalles
 - Ver todas tus cuotas pagadas
 - Editar cuenta
 - Eliminar cuenta
 
-- **Panel de administración de Django**:
+-**Panel de administración de Django**:
 - Acceder a /admin/ con el superusuario
 - Gestionar directamente los modelos (Integrante - Organizacion - Cuota - Gasto - ItemGasto)
 
