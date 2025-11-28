@@ -34,7 +34,7 @@
                     {% if integrantes %}
                         {% for integrante in integrantes %}
                         <tr>
-                            <th scope="row">1</th>
+                            <th scope="row">{{ forloop.counter }}</th>
                             <td>{{ integrante.user.username }}</td>
                             <td>{{ integrante.user.email }}</td>
                             <td>{{ integrante.direccion }}</td>

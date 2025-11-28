@@ -143,8 +143,12 @@ def cuotas_view(request):
 #mostrar integrantes
 @login_required 
 def integrantes_view(request):
-    integrante = Integrante.objects.get(user=request.user)
+    integrante = get_object_or_404(Integrante, user=request.user)
     organizacion = integrante.organizacion
+    #vallidacion admin
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+
     integrantes = Integrante.objects.filter(organizacion=organizacion)
     return render(request, "integrantes.html", {"organizacion": organizacion, "integrantes": integrantes})
 
@@ -153,6 +157,11 @@ def integrantes_view(request):
 #form pago cuotas
 @login_required 
 def pago_cuotas_view(request):
+    integrante = get_object_or_404(Integrante, user=request.user)
+    #validacion admin
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+
     if request.method == 'POST':
         form = CuotaForm(request.POST)
         if form.is_valid():
@@ -169,6 +178,11 @@ def pago_cuotas_view(request):
 #form gasto
 @login_required 
 def registro_gasto_view(request):
+    integrante = get_object_or_404(Integrante, user=request.user)
+    #vallidacion admin
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+
     if request.method == 'POST':
         gasto_form = GastoForm(request.POST)
         if gasto_form.is_valid():
@@ -185,7 +199,12 @@ def registro_gasto_view(request):
 #form item gasto
 @login_required 
 def registro_item_gasto_view(request, gasto_id):
-    gasto = Gasto.objects.get(id=gasto_id)
+    integrante = get_object_or_404(Integrante, user=request.user)
+    gasto = get_object_or_404(Gasto, id=gasto_id)
+    #validacion admin
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+
     if request.method == 'POST':
         item_form = ItemGastoForm(request.POST)    
         if item_form.is_valid():
@@ -202,6 +221,7 @@ def registro_item_gasto_view(request, gasto_id):
 
 
 #mostrar lista de gastos
+@login_required
 def lista_gastos_view(request):
     gastos = Gasto.objects.all()
     return render(request, 'lista_gastos.html', {'gastos': gastos})
@@ -209,6 +229,7 @@ def lista_gastos_view(request):
 
 
 #detalles de gasto /items
+@login_required
 def detalle_gasto_view(request, gasto_id):
     gasto = Gasto.objects.get(id=gasto_id)
     items = gasto.items.all()
@@ -258,5 +279,19 @@ def editar_integrante_view(request):
     else:
         form = IntegranteForm(instance=integrante)
     return render(request, 'editar_integrante.html', {'form': form})
+
+
+
+#mostrar todas las cuotas pagadas
+@login_required
+def lista_cuotas_view(request):
+    integrante = Integrante.objects.get(user=request.user)
+    if request.user != integrante.organizacion.admin_local:
+        return redirect('inicio')
+    cuotas = Cuota.objects.filter(integrante__organizacion=integrante.organizacion)
+    return render(request, "lista_cuotas.html", {"cuotas": cuotas})
+
+
+
 
 

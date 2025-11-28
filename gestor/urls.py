@@ -14,6 +14,7 @@ urlpatterns = [
     # cuotas
     path('cuotas/', views.cuotas_view, name='cuotas'),
     path('pago_cuotas/', views.pago_cuotas_view, name='pago_cuotas'),
+    path('cuotas/lista', views.lista_cuotas_view, name='lista_cuotas'),
     # integrantes
     path('integrantes/', views.integrantes_view, name='integrantes'),
     path('integrantes/<int:integrante_id>/eliminar/confirmado', views.eliminar_integrante, name='eliminar_integrante'),

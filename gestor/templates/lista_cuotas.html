@@ -3,19 +3,12 @@
 {% load static %}
 
 <!-- titulo: inicio -->
-{% block title %}Lista gastos{% endblock %}
+{% block title %}Lista integrantes{% endblock %}
 
 {% block content %}
 
-<!-- mensaje -->
-{% if messages %}
-{% for message in messages %}
-<div class="alert alert-success mt-3">{{ message }}</div>
-{% endfor %}
-{% endif %}
-
 <div class="container text-center py-5 mx-auto">
-    <h1 class="mt-3 fs-3">Gastos registrados 📌</h1>
+    <h1 class="mt-3 fs-3">Cuotas pagadas 📌</h1>
 
     <div class="d-flex flex-column justify-content-center align-items-center mx-auto gap-3">
         <div class="bg-light my-5">
@@ -24,26 +17,26 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Total</th>
+                        <th scope="col">Cuota pagada</th>
+                        <th scope="col">Fecha pago</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% if gastos %}
-                        {% for gasto in gastos %}
+                    {% if cuotas %}
+                        {% for cuota in cuotas %}
                         <tr>
                             <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{ gasto.nombre }}</td>
-                            <td>{{ gasto.fecha }}</td>
-                            <td>{{ gasto.total }}</td>
+                            <td>{{ cuota.integrante.user.username }}</td>
+                            <td>{{ cuota.mes_pagado }} {{ cuota.anio_pagado }}</td>
+                            <td>{{ cuota.fecha_pago }}</td>
                             <td>
-                                <a href="{% url 'detalle_gasto' gasto.id %}" class="btn btn-primary">Ver detalles</a>
-                            </td>
+                                <a href="" class="btn btn-danger">Eliminar pago</a>
+                            </td>                            
                         </tr>
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="6" class="text-center">Aún no hay gastos registrados</td>
+                            <td colspan="6" class="text-center">Aún no hay pagos registrados</td>
                         </tr>
                     {% endif %}
                 </tbody>
