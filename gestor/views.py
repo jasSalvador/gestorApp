@@ -195,16 +195,7 @@ def editar_integrante_view(request):
 # vistas de cuotas
 #==================================================
 
-#mostrar cuotas pagadas de cada integrante
-@login_required 
-def cuotas_view(request):
-    integrante = Integrante.objects.get(user=request.user)
-    cuotas = integrante.cuotas.all()
-    organizacion = integrante.organizacion
-    integrante = Integrante.objects.filter(organizacion=organizacion)
-    return render(request, "cuotas.html", {"organizacion": organizacion, "integrante": integrante, "cuotas": cuotas})
-
-#form pago cuotas
+#form registro pago de cuotas
 @login_required 
 def pago_cuotas_view(request):
     # obtener integrante asociado al usuario logueado
@@ -214,15 +205,25 @@ def pago_cuotas_view(request):
         return redirect('inicio')
 
     if request.method == 'POST':
-        form = CuotaForm(request.POST)
+        form = CuotaForm(request.POST, organizacion=integrante.organizacion)
         if form.is_valid():
             form.save()
             messages.success(request, 'Se ha registrado el pago exitosamente!')
             return redirect('inicio')
     else:
-        form = CuotaForm()
+        form = CuotaForm(organizacion=integrante.organizacion)
 
     return render(request, 'pago_cuotas.html', {'form': form})
+
+
+#mostrar cuotas pagadas de cada integrante
+@login_required 
+def cuotas_view(request):
+    integrante = Integrante.objects.get(user=request.user)
+    cuotas = integrante.cuotas.all()
+    organizacion = integrante.organizacion
+    integrante = Integrante.objects.filter(organizacion=organizacion)
+    return render(request, "cuotas.html", {"organizacion": organizacion, "integrante": integrante, "cuotas": cuotas})
 
 #mostrar todas las cuotas pagadas
 @login_required
@@ -268,7 +269,7 @@ def confirmar_eliminar_cuota_view(request, cuota_id):
 # vistas de gasto
 #==================================================
 
-#form gasto
+#form registro gasto
 @login_required 
 def registro_gasto_view(request):
     # obtener integrante asociado al usuario logueado
@@ -278,13 +279,13 @@ def registro_gasto_view(request):
         return redirect('inicio')
 
     if request.method == 'POST':
-        gasto_form = GastoForm(request.POST)
+        gasto_form = GastoForm(request.POST, organizacion=integrante.organizacion)
         if gasto_form.is_valid():
             gasto = gasto_form.save()
             messages.success(request, 'Gasto registrado, ahora puedes agregar items al gasto')
             return redirect('registro_item_gasto', gasto_id=gasto.id)
     else:
-        gasto_form = GastoForm()
+        gasto_form = GastoForm(organizacion=integrante.organizacion)
     
     return render(request, 'registro_gasto.html', {'form': gasto_form})
 

@@ -20,13 +20,25 @@ class CuotaForm(forms.ModelForm):
         model = Cuota
         fields = ['integrante','monto', 'fecha_pago', 'mes_pagado', 'anio_pagado']
 
+    def __init__(self, *args, **kwargs):
+        organizacion = kwargs.pop('organizacion', None)
+        super().__init__(*args, **kwargs)
+        if organizacion:
+            #mostrar solo integrantes de la organizacicon actual
+            self.fields['integrante'].queryset = Integrante.objects.filter(organizacion=organizacion)
 
 #gasto
 class GastoForm(forms.ModelForm):
     class Meta:
         model = Gasto
-        fields = ['organizacion', 'nombre', 'fecha']
+        fields = ['nombre', 'fecha']
 
+    def __init__(self, *args, **Kwargs):
+        organizacion = Kwargs.pop('organizacion', None)
+        super().__init__(*args, **Kwargs)
+        if organizacion:
+            #forzar q el gasto se cree para la organizacion actual
+            self.instance.organizacion = organizacion
 
 #item de gasto
 class ItemGastoForm(forms.ModelForm):
