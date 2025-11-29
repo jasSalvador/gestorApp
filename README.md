@@ -66,6 +66,7 @@ Estas aplicaciones permiten acelerar el desarrollo y asegurar funcionalidades b�
 - Se muestran cuotas pagadas según integrante
 **Nuevas funcionalidades**:
 - Se muestra listado de todas las cuotas pagadas
+- Validación para permitir solo un pago de cuota por mes/año por integrante
 
 ### Gastos
 - Registrar gastos por actividad (ej: fiesta, reparación) desde formulario
@@ -73,7 +74,7 @@ Estas aplicaciones permiten acelerar el desarrollo y asegurar funcionalidades b�
 - Se muestran todos los gastos y su detalle
 
 ## Templates 🎇
-El proyecto incluye templates en Django para:
+El proyecto en total incluye 19 templates en Django para:
 - Login y registro
 - Registrar, listar y visualizar cuotas
 - Registrar, listar y visualizar gastos y detalles de gastos
@@ -81,6 +82,8 @@ El proyecto incluye templates en Django para:
 **Nuevos templates**:
 - Listado de cuotas pagadas
 - Confirmación de eliminación para integrante - cuota - gasto
+- Perfil de usuario
+- Error 404 personalizada
 
 ## Administración 🔑
 - Se creó un superusuario para acceder al panel de administración de Django
@@ -144,6 +147,8 @@ El proyecto incluye templates en Django para:
 -**Panel de administración de Django**:
 - Acceder a /admin/ con el superusuario
 - Gestionar directamente los modelos (Integrante - Organizacion - Cuota - Gasto - ItemGasto)
+
+Este proyecto refleja la integración de todo lo aprendido, con un sistema funcional, seguro y escalable que puede servir como base para futuras mejoras.
 
 ## Autora 👩🏻‍💻
 
