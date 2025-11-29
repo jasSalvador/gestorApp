@@ -191,6 +191,13 @@ def editar_integrante_view(request):
     return render(request, 'editar_integrante.html', {'form': form})
 
 
+#perfil integrante
+@login_required
+def perfil_integrante_view(request):
+    integrante = get_object_or_404(Integrante, user=request.user)
+    return render(request, 'perfil_integrante.html', {'integrante': integrante})
+
+
 #==================================================
 # vistas de cuotas
 #==================================================

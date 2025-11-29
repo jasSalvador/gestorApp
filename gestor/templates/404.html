@@ -1,0 +1,26 @@
+<!--hereda del archivo base.html-->
+{% extends 'base.html' %} 
+{% load static %}
+
+<!-- titulo: inicio -->
+{% block title %}404{% endblock %}
+
+{% block content %}
+
+<!-- mensaje -->
+{% if messages %}
+{% for message in messages %}
+
+{% endfor %}
+{% endif %}
+<div class="not-found text-center pt-5">
+    <div class="d-flex justify-content-evenly align-items-center mx-auto pt-5">
+        <div>
+            <h1 class="display-1 fw-bold">404</h1>
+            <h2 class="">Página no encontrada</h2>
+            <p class="mb-5">La página que buscas no existe o fue movida.</p>
+            <a href="{% url 'inicio' %}" class="btn btn-info">Volver a inicio</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

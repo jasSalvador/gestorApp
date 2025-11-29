@@ -22,6 +22,7 @@ urlpatterns = [
     path('integrantes/<int:integrante_id>/eliminar/', views.confirmar_eliminar_integrante_view, name='confirmar_eliminar_integrante'),
     path('integrantes/<int:integrante_id>/eliminar/confirmado', views.eliminar_integrante, name='eliminar_integrante'),
     path('integrantes/editar/', views.editar_integrante_view, name='editar_integrante'),
+    path('perfil/', views.perfil_integrante_view, name='perfil_integrante'),
     # gastos
     path('registro_gasto/', views.registro_gasto_view, name='registro_gasto'),
     path('registro_item_gasto/<int:gasto_id>/', views.registro_item_gasto_view, name='registro_item_gasto'),

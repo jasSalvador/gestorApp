@@ -1,0 +1,36 @@
+<!--hereda del archivo base.html-->
+{% extends 'base.html' %} 
+{% load static %}
+
+<!-- titulo: inicio -->
+{% block title %}Perfil integrante{% endblock %}
+
+{% block content %}
+
+<!-- mensaje -->
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success mt-3">{{ message }}</div>
+{% endfor %}
+{% endif %}
+
+<div class="container text-center py-5 mx-auto">
+    <h1 class="mt-3 fs-3">Mi perfil 📌</span></h1>
+    <!-- datos integrante -->
+    <div class="card w-50 my-5 text-center mx-auto bg-light">
+        <div class="card-body ">
+            <h6 class="card-title fs-5 fw-bold">Nombre: <span class="fw-bold fs-4 text-primary">{{ integrante.user.username }}</span></h6>
+            <hr>
+            <p class="card-text"><span class="fw-bold">Email: </span> {{ integrante.user.email }}</p>
+            <p class="card-text"><span class="fw-bold">Telefono: </span> {{ integrante.telefono }}</p>
+            <p class="card-text"><span class="fw-bold">Dirección: </span> {{ integrante.direccion }}</p>
+            <p class="card-text"><span class="fw-bold">Dependiente: </span> {{ integrante.dependiente }}</p>
+            <p class="card-text"><span class="fw-bold">Organización: </span> {{ integrante.organizacion.nombre }}</p>
+            <p class="card-text"><span class="fw-bold">Tipo: </span> {{ integrante.organizacion.tipo }}</p>
+        </div>
+    </div>
+    <div class="text-center mx-auto">
+        <a href="{% url 'inicio' %}" class="btn btn-info my-3">Volver a inicio</a>
+    </div>
+</div>
+{% endblock %}

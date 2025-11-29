@@ -1,7 +1,6 @@
 from django import forms
 from .models import Integrante, Organizacion, Cuota, Gasto, ItemGasto
 
-
 #organizacion
 class OrganizacionForm(forms.ModelForm):
     class Meta:

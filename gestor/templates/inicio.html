@@ -42,9 +42,12 @@
         <!--cuenta -->
         <div class="d-flex flex-column align-items-center my-3 gap-3">
             <h4>Administra tu cuenta</h4>
-            <div class="text-center mx-auto">
-                <a href="{% url 'editar_integrante' %}" class="btn btn-primary mb-1">Editar cuenta</a>
-                <a href="{% url 'confirmar_eliminar_integrante' integrante.id %}" class="btn btn-danger mb-1">Eliminar cuenta</a>
+            <div class="d-flex flex-column justify-content-center mb-3">
+                <a href="{% url 'perfil_integrante' %}" class="btn btn-info mb-1">Ver mi perfil</a>
+                <div class="text-center mx-auto">
+                    <a href="{% url 'editar_integrante' %}" class="btn btn-primary mb-1">Editar cuenta</a>
+                    <a href="{% url 'confirmar_eliminar_integrante' integrante.id %}" class="btn btn-danger mb-1">Eliminar cuenta</a>
+                </div>
             </div>
         </div>
     </div> 
