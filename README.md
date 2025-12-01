@@ -165,6 +165,9 @@ El proyecto cunta con un video en [YouTube] que muestra el flujo y las vistas. E
 - Acceder a /admin/ con el superusuario
 - Gestionar directamente los modelos (Integrante - Organizacion - Cuota - Gasto - ItemGasto)
 
+## Licencia 📃
+Este proyecto está bajo la licencia MIT.
+
 ## Conclusiones 🎇
 GestorApp refleja la integración de todo lo aprendido en el bootcamp de Python y Django. El proyecto demuestra cómo aplicar programación estructurada, POO y desarrollo web para resolver una problematica real de organización comunitaria y su diseño escalable y seguro lo convierte en una base sólida para futuras mejoras y despliegues.
 
