@@ -1,6 +1,20 @@
 # GestorAPP 📝
 
-En función de mi proyecto personal previamente establecido - App web para comunidades, juntas de vecinos o cursos que necesiten organizar integrantes, cuotas, dineros recaudados o eventos - he implementado las diferentes tecnologías y competencias técnicas adquiridas en el modulo 3: **Fundamentos de programación en Python**.
+## Problema identificado 🔍
+En muchas comunidades, juntas de vecinos o cursos, la gestión de pagos, gastos y organización de integrantes suele ser un problema, ya que se realiza de manera manual, lo que genera desorden, lentitud, perdida de información y falta transparencia.
+
+## Solución propuesta 💡 
+Ofrecer una aplicación web que centralice la administración de integrantes, cuotas y gastos en un sistema seguro y escalable. Con formularios amigables, vistas protegidas e información diferenciada para usuarios y administradores, permitir gestionar y acceder a la información de manera rapida, clara y eficiente. 
+
+## Objetivos del proyecto 📍
+- Facilitar la organización de organizaciones y comunidades 
+- Asegurar transparencia en el manejo de cuotas y gastos
+- Ofrecer un sistema automatizado que agilice la gestión y entrega de información
+- Proporcionar un sistema escalable que pueda crecer con nuevas funcionalidades
+- Aplicar buenas prácticas de programación y despliegue web con Django y MySQL
+
+## Desarrollo 🛠
+En función de mi proyecto personal previamente establecido, iré implementado las diferentes tecnologías y competencias técnicas adquiridas a lo largo del Bootcamp:
 
 Como **primera etapa**: 'Fundamentos de programación en Python', he desarrollado un menú principal que permite acceder a las diferentes secciones del proyecto: **cuotas, integrantes y gastos** cada una con su propio menú para ver, crear, editar, eliminar. Por el momento, el funcionamiento es a través de la terminal.
 
@@ -100,6 +114,9 @@ El proyecto en total incluye 19 templates en Django para:
 - Migración completa a Django ✅
 - Integración con base de datos ✅
 
+## Demo
+El proyecto cunta con un video en [YouTube] que muestra el flujo y las vistas. En él se pueden ver las diferencias en la página de inicio de un usuario registrado como administrador "maria" y un usuario integrante "pablo"que no tiene acceso al panel de administración. [Video Demo](https://youtu.be/hqRqY9spNdw)
+
 ## Ejecución 📌
 1. Clonar el repositorio
 2. Crear y activar entorno virtual: 
@@ -148,8 +165,8 @@ El proyecto en total incluye 19 templates en Django para:
 - Acceder a /admin/ con el superusuario
 - Gestionar directamente los modelos (Integrante - Organizacion - Cuota - Gasto - ItemGasto)
 
-Este proyecto refleja la integración de todo lo aprendido, con un sistema funcional, seguro y escalable que puede servir como base para futuras mejoras.
+## Conclusiones 🎇
+GestorApp refleja la integración de todo lo aprendido en el bootcamp de Python y Django. El proyecto demuestra cómo aplicar programación estructurada, POO y desarrollo web para resolver una problematica real de organización comunitaria y su diseño escalable y seguro lo convierte en una base sólida para futuras mejoras y despliegues.
 
 ## Autora 👩🏻‍💻
-
 Jasmin S | Fan del código bonito ✨
